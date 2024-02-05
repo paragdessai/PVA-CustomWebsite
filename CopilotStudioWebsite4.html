@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Banking</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background: #f4f4f4;
+        }
+
+        .header {
+            background: #3498db;
+            color: #fff;
+            text-align: center;
+            padding: 30px;
+            cursor: pointer;
+        }
+
+
+        .header img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+        }
+
+        .header h1 {
+            margin: 10px 0;
+            font-size: 24px;
+        }
+
+        .navbar {
+            background: #333;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .navbar a {
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 20px;
+            margin: 0 10px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .page {
+            text-align: center;
+            padding: 50px;
+            background: #fff;
+            margin: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .page img {
+            width: 100%;
+            max-width: 600px;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .page h2 {
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+
+        .page p {
+            color: #666;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .contact-form {
+            text-align: left;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .contact-form label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .contact-form input, .contact-form textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .contact-form button {
+            background: #3498db;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+
+ .agent {
+            position: fixed;
+            right: 10px;
+            bottom: 20px;
+            width: 140px;
+            height: 150px;
+            border: none;
+            resize: both;
+            overflow: auto;
+            transition: height 0.3s ease; /* Add transition for smooth collapse/expand */
+        }
+
+        .chatbot-container {
+            position: fixed;
+            right: 20px;
+            bottom: 20px;
+            width: 350px;
+            height: 450px;
+            border: none;
+            resize: both;
+            overflow: auto;
+            transition: height 0.3s ease; /* Add transition for smooth collapse/expand */
+        }
+
+        .chatbot-header {
+            background: #3498db;
+            color: #fff;
+            text-align: center;
+            padding: 10px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .chatbot-header .close-button {
+            float: right;
+            cursor: pointer;
+        }
+
+        .chatbot {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .chatbot-container.collapsed {
+            height: 0;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+    <div class="header" onclick="toggleChatbot()">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3XnmyGSIb0i0mr6qVRj8bCcXNyO_cIwQV4g&usqp=CAU" alt="Logo">
+        <h1>Welcome, Golden Ore Bank!</h1>
+    </div>
+    <div class="navbar">
+        <a href="#about">About Us</a>
+        <a href="#services">Our Services</a>
+        <a href="#contact">Contact Us</a>
+    </div>
+    <div id="about" class="page">
+        <img src="https://media.marketrealist.com/brand-img/qU62TAE-f/0x0/uploads/2019/09/bank.jpg" alt="About Us">
+        <h2>About Us</h2>
+        <p>We are a leading bank with a commitment to providing excellent service to our customers. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam.</p>
+    </div>
+    <div id="services" class="page">
+        <img src="https://ux247.com/wp-content/uploads/2019/12/UX-in-financial-services-part-2-designing-better-banking-services.jpg" alt="Services">
+        <h2>Our Services</h2>
+        <p>We offer a wide range of banking services including:</p>
+        <ul style="text-align: left;">
+            <!-- Add more services as needed -->
+        </ul>
+        <p>Explore our services and find the right financial solutions for you.</p>
+    </div>
+    <div id="contact" class="page">
+        <img src="https://th.bing.com/th/id/OIP.kuQCpvduIszCrRC3tCw6_wHaCp?rs=1&pid=ImgDetMain" alt="Contact Us">
+        <h2>Contact Us</h2>
+        <p>Have a question or need assistance? Contact our customer service team for help.</p>
+        <div class="contact-form">
+            <label for="name">Your Name:</label>
+            <input type="text" id="name" name="name" required>
+            <label for="email">Your Email:</label>
+            <input type="email" id="email" name="email" required>
+            <label for="message">Your Message:</label>
+            <textarea id="message" name="message" rows="4" required></textarea>
+            <button type="submit">Send Message</button>
+        </div>
+    </div>
+
+
+
+<div class="agent" onclick="toggleChatbot()">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6BGMMK52jyaj3Dm3nkuKUEv6zUFkxNreVYQ&usqp=CAU" alt="Logo">
+    </div>
+
+
+    <div class="chatbot-container">
+
+        <div class="chatbot-header" onclick="toggleChatbot()">
+            Chatbot
+            <span class="close-button" onclick="toggleChatbot()">X</span>
+        </div>
+
+        <iframe class="chatbot" src="https://web.powerva.microsoft.com/environments/a58c67d9-95c4-eaa1-b784-e96746d9c61b/bots/cr579_customerDemoBot/webchat?__version__=2"></iframe>
+    </div>
+
+    <script>
+        function toggleChatbot() {
+            var chatbotContainer = document.querySelector('.chatbot-container');
+            chatbotContainer.classList.toggle('collapsed');
+        }
+    </script>
+</body>
+</html>
