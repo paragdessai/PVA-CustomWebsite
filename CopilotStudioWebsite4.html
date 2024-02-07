@@ -58,11 +58,12 @@
 
         .page img {
             width: 100%;
+            max-width: 600px;
             height: auto;
             border-radius: 8px;
             margin-bottom: 20px;
         }
-
+        
         .page h2 {
             color: #333;
             font-size: 24px;
@@ -74,6 +75,13 @@
             font-size: 16px;
             line-height: 1.6;
         }
+
+        .full-width-image {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
 
         .contact-form {
             text-align: left;
@@ -159,19 +167,23 @@
     </style>
 </head>
 <body>
+
+    <!--Customer Logo-->
     <div class="header" onclick="toggleChatbot()">
         <img src="https://th.bing.com/th/id/OIP.O_cndFd25_-h5XtYFR-LbwHaFj?w=228&h=180&c=7&r=0&o=5&dpr=1.5&pid=1.7" alt="Logo">
         <h1>Welcome, Equitable Holdings!</h1>
     </div>
+
+    <!--Nav Bar-->
     <div class="navbar">
         <a href="#about">About Us</a>
         <a href="#services">Our Services</a>
         <a href="#contact">Contact Us</a>
     </div>
 
-    <!-- Main Picture-->
+    <!-- Customer Main Picture-->
     <div id="about" class="page">
-        <img src="https://github.com/paragdessai/PVA-CustomWebsite/blob/main/Equitable.jpg?raw=true" alt="About Us">
+      <img src="https://github.com/paragdessai/PVA-CustomWebsite/blob/main/Equitable.jpg?raw=true" alt="About Us" class="full-width-image">  
         <h2>About Us</h2>
         <p>We are a leading bank with a commitment to providing excellent service to our customers. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam.</p>
     </div>
