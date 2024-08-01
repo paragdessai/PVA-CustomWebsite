@@ -58,11 +58,12 @@
 
         .page img {
             width: 100%;
+            max-width: 600px;
             height: auto;
             border-radius: 8px;
             margin-bottom: 20px;
         }
-        
+
         .page h2 {
             color: #333;
             font-size: 24px;
@@ -107,21 +108,13 @@
             font-size: 16px;
         }
 
-         .full-width-image {
-    width: 100%;
-    height: auto;
-    border-radius: 8px;
-    margin-bottom: 20px;
-}
-        .page#about img.about-us-image {
-    max-width: 800px; /* You can adjust this as needed */
-}
+
  .agent {
             position: fixed;
             right: 10px;
             bottom: 20px;
             width: 140px;
-            height: 75px;
+            height: 150px;
             border: none;
             resize: both;
             overflow: auto;
@@ -167,29 +160,20 @@
     </style>
 </head>
 <body>
-
-    <!--Customer Logo-->
     <div class="header" onclick="toggleChatbot()">
-        <img src="https://th.bing.com/th/id/OIP.O_cndFd25_-h5XtYFR-LbwHaFj?w=228&h=180&c=7&r=0&o=5&dpr=1.5&pid=1.7" alt="Logo">
-        <h1>Welcome, Equitable Holdings!</h1>
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3XnmyGSIb0i0mr6qVRj8bCcXNyO_cIwQV4g&usqp=CAU" alt="Logo">
+        <h1>Welcome, Golden Ore Bank!</h1>
     </div>
-
-    <!--Nav Bar-->
     <div class="navbar">
         <a href="#about">About Us</a>
         <a href="#services">Our Services</a>
         <a href="#contact">Contact Us</a>
     </div>
-
-    <!-- Customer Main Picture About Us-->
     <div id="about" class="page">
-      <img src="https://github.com/paragdessai/PVA-CustomWebsite/blob/main/Equitable.jpg?raw=true" alt="About Us" class="full-width-image">  
+        <img src="https://media.marketrealist.com/brand-img/qU62TAE-f/0x0/uploads/2019/09/bank.jpg" alt="About Us">
         <h2>About Us</h2>
         <p>We are a leading bank with a commitment to providing excellent service to our customers. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam.</p>
     </div>
-
-
-    <!-- Our Services Section-->
     <div id="services" class="page">
         <img src="https://ux247.com/wp-content/uploads/2019/12/UX-in-financial-services-part-2-designing-better-banking-services.jpg" alt="Services">
         <h2>Our Services</h2>
@@ -199,8 +183,6 @@
         </ul>
         <p>Explore our services and find the right financial solutions for you.</p>
     </div>
-
-     <!-- Contact Us Section-->
     <div id="contact" class="page">
         <img src="https://th.bing.com/th/id/OIP.kuQCpvduIszCrRC3tCw6_wHaCp?rs=1&pid=ImgDetMain" alt="Contact Us">
         <h2>Contact Us</h2>
@@ -217,23 +199,22 @@
     </div>
 
 
-  <!-- Agent Logo-->
+
 <div class="agent" onclick="toggleChatbot()">
         <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6BGMMK52jyaj3Dm3nkuKUEv6zUFkxNreVYQ&usqp=CAU" alt="Logo">
     </div>
 
- <!-- Chatbot Container Header-->
+
     <div class="chatbot-container">
 
         <div class="chatbot-header" onclick="toggleChatbot()">
-            AI Assistant
+            Chatbot
             <span class="close-button" onclick="toggleChatbot()">X</span>
         </div>
 
         <iframe class="chatbot" src="https://web.powerva.microsoft.com/environments/a58c67d9-95c4-eaa1-b784-e96746d9c61b/bots/cr579_customerDemoBot/webchat?__version__=2"></iframe>
     </div>
 
-     <!-- Script for Minimizing-->
     <script>
         function toggleChatbot() {
             var chatbotContainer = document.querySelector('.chatbot-container');

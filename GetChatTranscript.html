@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Custom Canvas with Bot Interaction</title>
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: url('https://github.com/paragdessai/PVAClickAnalytics/blob/main/Chatbotbackground.png?raw=true') no-repeat center center;
+      background-size: cover;
+    }
+
+    #chatbot-icon {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      cursor: pointer;
+    }
+
+    #chatbot-container {
+      display: none; /* Hidden by default */
+      position: relative;
+      width: 400px;
+      height: 600px;
+      border: 1px solid #ccc;
+      background: #fff;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+      z-index: 1000;
+      flex-direction: column;
+      display: flex;
+    }
+
+    .button-container {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px;
+      background: #f1f1f1;
+    }
+
+    .button-container button {
+      background: #0078d4;
+      border: none;
+      color: white;
+      padding: 5px 10px;
+      cursor: pointer;
+    }
+
+    #webchat {
+      flex: 1;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #resize-handle {
+      width: 10px;
+      height: 10px;
+      background: #0078d4;
+      cursor: nwse-resize;
+      position: absolute;
+      bottom: 0;
+      right: 0;
+    }
+
+    #message {
+      display: none;
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      padding: 10px;
+      background: #0078d4;
+      color: white;
+      border-radius: 5px;
+    }
+
+    #popup {
+      display: none;
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      padding: 10px;
+      background: #fff;
+      border: 1px solid #ccc;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+      z-index: 1001;
+    }
+
+    #popup-close {
+      background: #0078d4;
+      border: none;
+      color: white;
+      padding: 5px 10px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div id="chatbot-icon">
+    <img src="https://github.com/cwheeler76/cwheeler76.github.io/blob/main/Images/JackVirtualAssistantIcon.png?raw=true" alt="Chatbot Icon">
+  </div>
+
+  <div id="chatbot-container">
+    <div class="button-container">
+      <button id="close-button">Close</button>
+      <button id="refresh-button">Refresh</button>
+      <button id="history-button">Show History</button>
+    </div>
+    <div id="webchat" role="main"></div>
+    <div id="resize-handle"></div>
+    <div id="message">Click on a URL to see it here.</div>
+  </div>
+
+  <div id="popup">
+    <p id="popup-url">URL will be displayed here.</p>
+    <button id="popup-close">Close</button>
+  </div>
+
+  <script src="https://cdn.botframework.com/botframework-webchat/latest/webchat.js"></script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const chatbotIcon = document.getElementById('chatbot-icon');
+      const chatbotContainer = document.getElementById('chatbot-container');
+      const closeButton = document.getElementById('close-button');
+      const refreshButton = document.getElementById('refresh-button');
+      const historyButton = document.getElementById('history-button');
+      const resizeHandle = document.getElementById('resize-handle');
+      const messageContainer = document.getElementById('message');
+      const popup = document.getElementById('popup');
+      const popupUrl = document.getElementById('popup-url');
+      const popupCloseButton = document.getElementById('popup-close');
+      let directLine;
+      let directLineToken;
+
+      let isResizing = false;
+      let startX, startY, startWidth, startHeight;
+
+      // Show chatbot container when icon is clicked
+      chatbotIcon.addEventListener('click', function() {
+        chatbotContainer.style.display = 'flex';
+        initializeWebChat(); // Initialize Web Chat when the container is displayed
+      });
+
+      // Close chatbot container when close button is clicked
+      closeButton.addEventListener('click', function() {
+        chatbotContainer.style.display = 'none';
+      });
+
+      // Refresh Web Chat when refresh button is clicked
+      refreshButton.addEventListener('click', function() {
+        localStorage.setItem('chatbot-expanded', 'true'); // Mark chatbot as expanded
+        location.reload(); // Reload the full HTML
+      });
+
+      // Send showHistory event when history button is clicked
+      historyButton.addEventListener('click', function() {
+        directLine.postActivity({
+          from: { id: 'user' },
+          name: 'showHistory',
+          type: 'event',
+          value: 'showHistory'
+        }).subscribe(
+          id => console.log(`Event sent successfully: ${id}`),
+          error => console.error(`Error sending event: ${error}`)
+        );
+      });
+
+      // Resize chatbot container when resize handle is dragged
+      resizeHandle.addEventListener('mousedown', function(event) {
+        isResizing = true;
+        startX = event.clientX;
+        startY = event.clientY;
+        startWidth = chatbotContainer.offsetWidth;
+        startHeight = chatbotContainer.offsetHeight;
+      });
+
+      document.addEventListener('mousemove', function(event) {
+        if (!isResizing) return;
+        
+        const deltaX = event.clientX - startX;
+        const deltaY = event.clientY - startY;
+        
+        chatbotContainer.style.width = startWidth + deltaX + 'px';
+        chatbotContainer.style.height = startHeight + deltaY + 'px';
+      });
+
+      document.addEventListener('mouseup', function() {
+        isResizing = false;
+      });
+
+      // Popup for URL
+      popupCloseButton.addEventListener('click', function() {
+        popup.style.display = 'none'; // Hide the popup
+      });
+
+      // Check if chatbot should be expanded after reload
+      if (localStorage.getItem('chatbot-expanded') === 'true') {
+        localStorage.removeItem('chatbot-expanded'); // Clear the flag
+        chatbotContainer.style.display = 'flex';
+        initializeWebChat(); // Initialize Web Chat when the container is displayed
+      }
+
+      // Function to initialize the Web Chat
+      async function initializeWebChat() {
+        try {
+          const tokenEndpointURL = 'https://default76f66a0b386f4e01b8b17ef54f9545.6c.environment.api.powerplatform.com/powervirtualagents/botsbyschema/crdee_wfTestDemoBot1/directline/token?api-version=2022-03-01-preview';
+
+          const token = await fetch(tokenEndpointURL)
+            .then(response => {
+              if (!response.ok) {
+                throw new Error('Failed to retrieve Direct Line token.');
+              }
+              return response.json();
+            })
+            .then(data => data.token);
+
+          // Initialize DirectLine with the retrieved token
+          directLine = window.WebChat.createDirectLine({ token });
+
+          // Clear previous Web Chat instance if it exists
+          const webchatContainer = document.getElementById('webchat');
+          webchatContainer.innerHTML = '';
+
+          // Initialize the chat
+          window.WebChat.renderWebChat(
+            {
+              directLine: directLine ,
+              userID: 'unique_user_id', // Replace with your unique user ID logic if needed
+              sendTypingIndicator: true,
+              styleOptions: {
+                botAvatarImage: 'https://github.com/cwheeler76/cwheeler76.github.io/blob/main/Images/BotAvatar.png?raw=true',
+                userAvatarImage: 'https://github.com/cwheeler76/cwheeler76.github.io/blob/main/Images/UserAvatar.png?raw=true',
+                userAvatarInitials: 'You',
+              }
+            },
+            webchatContainer
+          );
+
+          // Listen for activities from the bot
+          directLine.activity$.subscribe(activity => {
+            if (activity.type === 'event' && activity.name === 'URL') {
+              // Extract the URL from the event's value
+              const url = activity.value.url;
+              if (url) {
+                // Display URL in the message container
+                messageContainer.textContent = `URL Clicked: ${url}`;
+                popupUrl.textContent = `URL Clicked: ${url}`;
+                popup.style.display = 'block';
+                
+                // Open URL in a new tab
+                window.open(url, '_blank');
+              }
+            }
+          });
+
+          // Post the EventToken with the token
+          const subscription = directLine.connectionStatus$.subscribe({
+            next(value) {
+              if (value === 2) {
+                directLine
+                  .postActivity({
+                    name: 'TokenEvent',
+                    type: 'event',
+                    value: { DirectLineToken: token }
+                  })
+                  .subscribe();
+
+                // Only send the event once, unsubscribe after the event is sent.
+                subscription.unsubscribe();
+              }
+            }
+          });
+
+        } catch (error) {
+          console.error('Error initializing Web Chat:', error);
+        }
+      }
+    });
+  </script>
+</body>
+</html>
